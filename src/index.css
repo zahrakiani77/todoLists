@@ -5,30 +5,81 @@
   src: url(./assets/fonts/Asimovian-Regular.ttf);
   font-weight: 400;
 }
-:root {
-   --color-background:#F3F2F2;
-  --text-color: #111;
-   --spacing: 4px;
-  --font-body: Inter, sans-serif;
+
+@font-face {
+  font-family: PlaypenSan;
+  src: url(./assets/fonts/PlaypenSansArabic-ExtraBold.ttf);
+  font-weight: 800;
 }
 
-html.dark {
+@font-face {
+  font-family: PlaypenSan;
+  src: url(./assets/fonts/PlaypenSansArabic-Bold.ttf);
+  font-weight: 700;
+}
+@font-face {
+  font-family: PlaypenSan;
+  src: url(./assets/fonts/PlaypenSansArabic-SemiBold.ttf);
+  font-weight: 600;
+}
+@font-face {
+  font-family: PlaypenSan;
+  src: url(assets/fonts/PlaypenSansArabic-Medium.ttf);
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: PlaypenSan;
+  src: url(assets/fonts/PlaypenSansArabic-Regular.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: PlaypenSan;
+  src: url(assets/fonts/PlaypenSansArabic-Light.ttf);
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: PlaypenSan;
+  src: url(assets/fonts/PlaypenSansArabic-ExtraLight.ttf);
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: PlaypenSan;
+  src: url(assets/fonts/PlaypenSansArabic-Thin.ttf);
+  font-weight: 100;
+}
+:root {
+  --color-background:#F3F2F2;
+  --text-color: #111;
   --spacing: 4px;
   --font-body: Inter, sans-serif;
-  --color-background:#150530;
+  --input-bg: #f3f4f6;           
+  --placeholder-color: #9ca3af;  
+  --text-color: #111827;   
+}
+
+.dark {
+  --spacing: 4px;
+  --font-body: Inter, sans-serif;
+  --color-background:hsl(235, 21%, 11%);
   --text-color: #fff;
+  --input-bg: hsl(235, 24%, 19%);    
+  --placeholder-color: #9ca3af;  
+  --text-color: #f9fafb;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--text-color);
-    margin: 0;
+  margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
-
 
 h1 {
   font-family: 'Asimovian';
@@ -36,14 +87,11 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+ input ,label {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+  }
+  input:focus {
+  outline: none;   
+  box-shadow: none;
 }
