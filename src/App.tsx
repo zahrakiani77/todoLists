@@ -1,6 +1,7 @@
+import Container from "./components/Container"
 
 const App = () => {
-  return <div className="bg-amber-300 font-bold m-4">App</div>;
+  return <Container/>;
 }
 
 export default App
