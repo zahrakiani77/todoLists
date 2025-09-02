@@ -59,6 +59,7 @@
   --input-bg: #f3f4f6;           
   --placeholder-color: #9ca3af;  
   --text-color: #111827;   
+  font-family: 'PlaypenSan';
 }
 
 .dark {
@@ -87,7 +88,7 @@ h1 {
   line-height: 1.1;
 }
 
- input ,label {
+ input ,label ,p,li,ul{
     background-color: var(--input-bg);
     color: var(--text-color);
   }
