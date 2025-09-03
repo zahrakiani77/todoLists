@@ -9,13 +9,13 @@ const Container = () => {
       const { darkMode, toggleTheme} = useTheme();
       const [tasks, setTasks]=useState<taskModel[]>([]);
       const [task, setTask]=useState('');
+
       useEffect(()=>{
         axiosInstance
           .get<taskModel[]>("/todo-lists")
           .then((res) => setTasks(res.data));
       },[])
 
-      console.log(tasks)
       const createTask=()=>{
         if(task){axiosInstance.post(
           "/todo-lists",
@@ -25,18 +25,35 @@ const Container = () => {
         }
         setTask('')
       }
-      const completeTest=(id:string|number)=>{
-        const initialState={...tasks};
+
+      const completeTest=(id:string|number,newVariable:boolean)=>{
+        const initialState = [...tasks] ;
 
         setTasks(
           tasks.map((task) =>
-            task.id === id ? {...task,isDone:!task.isDone } : task,
+            task.id === id ? { ...task, isDone: newVariable } : task,
           ),
         );
 
-        axiosInstance.patch(`todo-lists/${id}`,{isDone:true},{headers:{'Content-Type':'application/json'}})
-        .then((res)=>setTasks(res.data))
-        .catch(()=>setTasks(initialState));
+
+        axiosInstance
+          .patch(
+            `todo-lists/${id}`,
+            { isDone: newVariable },
+            { headers: { "Content-Type": "application/json" } },
+          )
+          .then((res) => {
+            if (Array.isArray(res.data)) {
+              setTasks(res.data);
+            } else {
+              setTasks((curr) =>
+                curr.map((task) =>
+                  task.id === id ? { ...task, ...res.data } : task,
+                ),
+              );
+            }
+          })
+          .catch(() => setTasks(initialState));
 
       }
   return (
@@ -73,23 +90,20 @@ const Container = () => {
         <section>
           <ul className="list rounded-box shadow-md">
             {tasks.map((todo) => (
-              <li className="list-row">
+              <li key={todo.id} className="list-row">
                 <div className="flex flex-row gap-4">
                   <div
                     className="size-6 rounded-4xl"
-                    onClick={() => completeTest(todo.id)}
                   >
                     <div
+                      onClick={() => completeTest(todo.id,!todo.isDone)}
                       className={`${todo.isDone ? `bg-gradient-to-r from-[#7C86FF] to-[#8C4BD2]` : `border-2 border-[#7C86FF]`} size-6 cursor-pointer rounded-4xl`}
                     >
-                      {todo.isDone && <Check className="text-white" />}
+                      {todo.isDone ? <Check className="text-white" /> : ""}
                     </div>
                   </div>
                   <div className="flex w-full flex-row justify-between text-lg">
-                    <p
-                      key={todo.id}
-                      className={`${todo.isDone && "line-through"}`}
-                    >
+                    <p className={`${todo.isDone && "line-through"}`}>
                       {todo.task}
                     </p>
 
