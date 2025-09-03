@@ -30,7 +30,7 @@ const Layout = ({children}:layoutProp) => {
   return (
     <div className="bg-background w-screen ">
       <img
-        src={`../public${bgImage}`}
+        src={bgImage}
         className="absolute top-0 w-full"
       ></img>
       <div className="">{children}</div>
