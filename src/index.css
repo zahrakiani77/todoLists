@@ -88,7 +88,7 @@ h1 {
   line-height: 1.1;
 }
 
- input ,label ,p,li,ul{
+ section,input ,label ,p,li,ul{
     background-color: var(--input-bg);
     color: var(--text-color);
   }

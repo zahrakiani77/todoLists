@@ -6,3 +6,11 @@ export type taskModel = {
   updatedAt: string;
 };
 
+export type taskPayload = {
+  task: string;
+};
+
+export type UpdateTaskPayload = {
+  task?: string;
+  isDone?: boolean;
+};
