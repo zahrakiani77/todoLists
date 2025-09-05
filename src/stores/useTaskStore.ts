@@ -59,7 +59,7 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       }));
     }
   },
-  completeTask: async (id: number|String, isDoneTask: boolean) => {
+  completeTask: async (id: number|string, isDoneTask: boolean) => {
     const { tasks } = get();
     const initialState = [...tasks];
 

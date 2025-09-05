@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import useTaskStore from "../stores/useTaskStore";
-import { ArrowDownToDotIcon, LucideLoader2 } from "lucide-react";
+import { ArrowDownToDotIcon } from "lucide-react";
 import { TaskList } from "./TaskList";
 import Header from "./Header";
 
 
 const Container = () => {
-  const { tasks, isLoading, error, GetAllTask ,CreateTask } = useTaskStore();
+  const { tasks, isLoading, GetAllTask ,CreateTask } = useTaskStore();
   const [task, setTask] = useState("");
   useEffect(() => {
   const controller = new AbortController();
