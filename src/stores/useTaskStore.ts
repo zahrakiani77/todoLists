@@ -53,7 +53,7 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       }));
       toast.success("Done :)");
     } catch (error) {
-      toast.error("Oops, something went wrong!");
+      toast.error("Oops, something went wrong :(");
       set((state) => ({
         tasks: state.tasks.filter((t) => t.id !== 0),
       }));
