@@ -1,125 +1,52 @@
-import { ArrowDownToDotIcon, Moon, Sun, Check, Edit, Trash } from "lucide-react";
-import { useTheme } from "../stores/ThemeProvider";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "./lib/utils";
-import type { taskModel } from "../types/task.model";
+import useTaskStore from "../stores/useTaskStore";
+import { ArrowDownToDotIcon } from "lucide-react";
+import { TaskList } from "./TaskList";
+import Header from "./Header";
 
 
 const Container = () => {
-      const { darkMode, toggleTheme} = useTheme();
-      const [tasks, setTasks]=useState<taskModel[]>([]);
-      const [task, setTask]=useState('');
+  const { tasks, isLoading, GetAllTask ,CreateTask } = useTaskStore();
+  const [task, setTask] = useState("");
+  useEffect(() => {
+  const controller = new AbortController();
+  GetAllTask();
+  return () => controller.abort();
+}, [GetAllTask]);
 
-      useEffect(()=>{
-        axiosInstance
-          .get<taskModel[]>("/todo-lists")
-          .then((res) => setTasks(res.data));
-      },[])
-
-      const createTask=()=>{
-        if(task){axiosInstance.post(
-          "/todo-lists",
-          { task },
-          { headers: { "Content-Type": "application/json" } },
-        ).then((res)=>{setTasks([res.data,...tasks])});            
-        }
-        setTask('')
-      }
-
-      const completeTest=(id:string|number,newVariable:boolean)=>{
-        const initialState = [...tasks] ;
-
-        setTasks(
-          tasks.map((task) =>
-            task.id === id ? { ...task, isDone: newVariable } : task,
-          ),
-        );
-
-
-        axiosInstance
-          .patch(
-            `todo-lists/${id}`,
-            { isDone: newVariable },
-            { headers: { "Content-Type": "application/json" } },
-          )
-          .then((res) => {
-            if (Array.isArray(res.data)) {
-              setTasks(res.data);
-            } else {
-              setTasks((curr) =>
-                curr.map((task) =>
-                  task.id === id ? { ...task, ...res.data } : task,
-                ),
-              );
-            }
-          })
-          .catch(() => setTasks(initialState));
-
-      }
+    const addTask = () => {
+         CreateTask(task);
+          setTask(""); 
+        };
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center shadow-2xl">
       <div className="absolute top-1/5 z-50 flex w-10/12 flex-col gap-10 md:w-2/3 lg:w-1/2">
-        <header className="flex w-full flex-row content-between justify-between">
-          <h1 className="text-3xl text-white text-shadow-lg/30 md:text-3xl lg:text-5xl">
-            ToDo
-          </h1>
-          <div className="my-2 cursor-pointer" onClick={toggleTheme}>
-            {darkMode ? (
-              <Sun className="text-white md:size-8" />
-            ) : (
-              <Moon className="text-white md:size-8" />
-            )}
+        <Header />
+        <section className="input md:input-xl w-full shadow-2xl">
+          <div className="size-6 rounded-4xl border-2 border-[#7C86FF]"></div>
+          <input
+            type="text"
+            placeholder="create a new todo..."
+            className="input input-primary md:input-lg"
+            onChange={(e) => setTask(e.target.value)}
+            value={task}
+          />
+          <ArrowDownToDotIcon
+            className="cursor-pointer text-[#69bf64]"
+            onClick={addTask}
+          />
+        </section>
+        {isLoading ? (
+          <div className="flex h-[calc(100vh-25rem)] flex-col items-center justify-center gap-5">
+            <span className="loading loading-infinity loading-xl text-primary"></span>
           </div>
-        </header>
-        <section>
-          <label className="input md:input-xl w-full">
-            <div className="size-6 rounded-4xl border-2 border-[#7C86FF]"></div>
-            <input
-              type="text"
-              placeholder="create a new todo..."
-              className="input input-primary md:input-lg"
-              onChange={(e) => setTask(e.target.value)}
-              value={task}
-            />
-            <ArrowDownToDotIcon
-              className="cursor-pointer text-[#69bf64]"
-              onClick={createTask}
-            />
-          </label>
-        </section>
-        <section>
-          <ul className="list rounded-box shadow-md">
-            {tasks.map((todo) => (
-              <li key={todo.id} className="list-row">
-                <div className="flex flex-row gap-4">
-                  <div
-                    className="size-6 rounded-4xl"
-                  >
-                    <div
-                      onClick={() => completeTest(todo.id,!todo.isDone)}
-                      className={`${todo.isDone ? `bg-gradient-to-r from-[#7C86FF] to-[#8C4BD2]` : `border-2 border-[#7C86FF]`} size-6 cursor-pointer rounded-4xl`}
-                    >
-                      {todo.isDone ? <Check className="text-white" /> : ""}
-                    </div>
-                  </div>
-                  <div className="flex w-full flex-row justify-between text-lg">
-                    <p className={`${todo.isDone && "line-through"}`}>
-                      {todo.task}
-                    </p>
-
-                    <div className="flex flex-row">
-                      <Edit />
-                      <Trash />
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
+        ) : (
+          <TaskList tasks={tasks} />
+        )}
       </div>
     </div>
   );
 }
+
 
 export default Container
