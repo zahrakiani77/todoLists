@@ -1,5 +1,5 @@
 
-import { ArrowDownToDotIcon, Check, Edit, Trash } from "lucide-react";
+import { ArrowDownToDotIcon, Edit, Trash } from "lucide-react";
 import type { taskModel } from "../types/task.model";
 import useTaskStore from "../stores/useTaskStore";
 import ChechedTask from "./ui/ChechedTask";
@@ -11,30 +11,18 @@ type TaskListProps = {
 };
 
 export const TaskList = ({ tasks }: TaskListProps) => {
-//  const[isEdit,setIsEdit]=useState(false);
-   //const [task, setTask] = useState('');
-      const { deleteTask ,updateTask } = useTaskStore();
-     // const editTask=(id:string|number, task:string)=>{
-       // updateTask(id,task);
-       // setTask('');
-      //}
-      //const toggleEdit=(id:number|string)=>{
-      //  const task = tasks.find((t) => t.id === id);
-      //  setIsEdit(Boolean(task));
-      //}
-      
-  const [editTaskId, setEditTaskId] = useState(null);
+  const { deleteTask, updateTask } = useTaskStore();
+  const [editTaskId, setEditTaskId] = useState<string|number>(0);
   const [editedText, setEditedText] = useState("");
 
-  const startEdit = (task) => {
+  const startEdit = (task: taskModel) => {
     setEditTaskId(task.id);
-    setEditedText(task.text);
+    setEditedText(task.task);
   };
 
-  const saveEdit = (id,task) => {
-    // اینجا باید متن ویرایش شده رو ذخیره کنی (مثلا به سرور بفرستی یا state به روز بشه)
+  const saveEdit = (id:number|string,task:string) => {
     updateTask(id, task);
-    setEditTaskId(null); // خارج شدن از حالت ویرایش
+    setEditTaskId(''); 
   };
 
   return (
