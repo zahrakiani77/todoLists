@@ -12,6 +12,7 @@ type taskStoreModel = {
   CreateTask: (newTask: string) => Promise<void>;
   completeTask: (id: number | string, isDone: boolean) => Promise<void>;
   deleteTask: (id: number | string) => Promise<void>;
+  updateTask:(id:number|string, todo:string)=> Promise<void>;
 };
 
 
@@ -28,7 +29,7 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       set({ tasks: res.data, isLoading: false });
     } catch (err: any) {
       toast.error("Oops, something went wrong!");
-      set({ error: err.message , isLoading: false });
+      set({ error: err.message, isLoading: false });
     }
   },
   CreateTask: async (newTask: string) => {
@@ -59,7 +60,7 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       }));
     }
   },
-  completeTask: async (id: number|string, isDoneTask: boolean) => {
+  completeTask: async (id: number | string, isDoneTask: boolean) => {
     const { tasks } = get();
     const initialState = [...tasks];
 
@@ -73,11 +74,10 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       const res = await tasksService.patch(id, { isDone: isDoneTask });
       set((state) => ({
         tasks: state.tasks.map((t) => (t.id === id ? res.data : t)),
-      }
-    ));
-    toast.success("Done :)");
+      }));
+      toast.success("Done :)");
     } catch (error) {
-     toast.error("Oops, something went wrong!");
+      toast.error("Oops, something went wrong!");
       set({ tasks: initialState });
     }
   },
@@ -97,6 +97,25 @@ const useTaskStore = create<taskStoreModel>((set, get) => ({
       set({ tasks: initialState });
     }
   },
+  updateTask:async(id:number|string,todo:string)=>{
+    const {tasks}=get();
+    const initialState=[...tasks];
+    set((state)=>({
+      tasks:state.tasks.map((t)=>t.id===id?{...t,task:todo}:t)
+    }));
+
+      try {
+        const res = await tasksService.patch(id, { task:todo });
+        set((state) => ({
+          tasks: state.tasks.map((t) => (t.id === id ? res.data : t)),
+        }));
+        toast.success("Done :)");
+      } catch (error) {
+        toast.error("Oops, something went wrong!");
+        set({ tasks: initialState });
+      }
+
+  }
 }));
 
 export default useTaskStore;
