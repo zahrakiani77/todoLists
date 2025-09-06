@@ -19,7 +19,7 @@ const Container = () => {
           setTask(""); 
         };
   return (
-    <div className="flex w-full justify-center shadow-2xl">
+    <div className="flex w-full justify-center shadow-2xl overflow-x-hidden">
       <div className="absolute top-1/5 z-50 flex w-10/12 flex-col gap-10 md:w-2/3 lg:w-1/2">
         <Header />
         <section className="input md:input-xl w-full shadow-2xl">
