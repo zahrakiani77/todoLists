@@ -19,11 +19,11 @@ const Container = () => {
           setTask(""); 
         };
   return (
-    <div className="flex w-full justify-center shadow-2xl overflow-x-hidden">
+    <div className="flex w-full justify-center overflow-x-hidden shadow-2xl">
       <div className="absolute top-1/5 z-50 flex w-10/12 flex-col gap-10 md:w-2/3 lg:w-1/2">
         <Header />
         <section className="input md:input-xl w-full shadow-2xl">
-          <div className="size-6 rounded-4xl border-2 border-[#7C86FF]"></div>
+          <div className="size-4 rounded-4xl border-2 border-[#7C86FF] md:size-6"></div>
           <input
             type="text"
             placeholder="create a new todo..."
