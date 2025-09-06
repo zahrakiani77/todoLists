@@ -29,13 +29,16 @@ export const TaskList = ({ tasks }: TaskListProps) => {
     <section>
       <ul className="list rounded-box shadow-md">
         {tasks?.map((todo: taskModel) => (
-          <li key={todo.id} className="list-row relative flex flex-row items-center gap-4">
+          <li
+            key={todo.id}
+            className="list-row relative flex flex-row items-center gap-4"
+          >
             <ChechedTask todo={todo} />
             {editTaskId === todo.id ? (
               <input
                 type="text"
                 placeholder="create a new todo..."
-                className="input input-primary input-sm md:input-md"
+                className="input input-ghost input-sm md:input-md"
                 onChange={(e) => setEditedText(e.target.value)}
                 defaultValue={todo.task}
               />
@@ -52,7 +55,7 @@ export const TaskList = ({ tasks }: TaskListProps) => {
               />
               {editTaskId === todo.id ? (
                 <ArrowDownToDotIcon
-                  className="mr-3 size-4 md:size-5 cursor-pointer text-[#69bf64]"
+                  className="mr-3 size-4 cursor-pointer text-[#69bf64] md:size-5"
                   onClick={() => saveEdit(todo.id, editedText)}
                 />
               ) : (
